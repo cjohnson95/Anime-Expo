@@ -1,49 +1,28 @@
-import { useState } from "react";
+import React from "react";
 
-export default function MyWatchedList({
-  myToWatchedList,
-  completeMyWatchedList,
-  editMyWatchedListText,
- 
-}) {
+export default function MyWatchedList({ watchedList, deleteAnime }) {
+  const handleDelete = (id) => {
+    const updatedWatchedList = watchedList.filter((anime) => anime.id !== id);
 
-  const [showInput, setShowInput] = useState(false)
+    if (deleteAnime) {
+      deleteAnime(updatedWatchedList);
+    }
+  };
 
   return (
-    <li>
-      <div className="left">
-        <h2
-        onClick={(e) => {
-          setShowInput(!showInput)
-        }}
-        >
-          {myWatchedList.text}
-        </h2>
-        <input
-          style={{display: showInput ? "block" : "none"}}
-          type='text'
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              editMyWatchedListText(myWatchedList.id, e)
-              setShowInput(false)
-            }
-          }}
-      >
-  </input>
-      </div>
-
-      <label className='middle'>
-        Complete
-        <input
-        type='checkbox'
-        checked={myWatchedList.completeMyWatchedList}
-        onChange={(e) => {
-          completeMyWatchedList(myWatchedList.id, e)
-        }}
-        />
-      </label>
-    </li>
-  
-  )
+    <div className="watchedanime">
+      <h1>Watched Anime List</h1>
+      <ul>
+        {watchedList.map((anime) => (
+          <li key={anime.id}>
+            <h1>{anime.Title}</h1>
+            <h2>{anime.Genre}</h2>
+            <h2>{anime.Year}</h2>
+            <img src={anime.Poster} alt={anime.Title} />
+            <button onClick={() => handleDelete(anime.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
-
